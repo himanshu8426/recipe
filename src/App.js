@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
-import { Input, Button } from 'antd';
+import { Input, Button, Row } from 'antd';
 import "antd/dist/antd.css";
-
+import RecipeCard from './recipe_card'
 
 function App() {
 
@@ -16,7 +16,6 @@ function App() {
   const [data, setData] = useState([])
   const [url, setUrl] = useState('')
   const [search, setSearch] = useState('')
-  const [query, setQuery] = useState('chicken')
 
   useEffect(() => {
     
@@ -40,6 +39,7 @@ function App() {
   }
 
   const updateQuery = e => {
+
     setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}`)
     console.log(url)
     setSearch('')
@@ -53,21 +53,28 @@ function App() {
             placeholder="search recipe"
             value={search} 
             onChange={updateSearch} 
-            
+            onPressEnter={updateQuery}
+            autoFocus
           ></Input>
         </div>
 
         <div className='search-button'>
           <Button type="primary" shape='circle-outline' icon='search' size='large' onClick={updateQuery}></Button>
         </div>
+            
+        <Row>
+          {
+            data ? data.map(
+              dataItem => (
+                <RecipeCard title={dataItem.recipe.label} image={dataItem.recipe.image} ingredients={dataItem.recipe.ingredients} />
+              )
+            )
+            : 'no data'
+          }
+          
+        </Row>
 
-        <div>
-          <ul>
-            {
-              data ? data.map(data => (<li>{data.recipe.calories}</li>)) : 'no data'
-            }    
-          </ul>
-        </div>
+        
 
     </div>
   );
