@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
-import { Input, Button, Row } from 'antd';
+import { Input, Tag, Row } from 'antd';
 import "antd/dist/antd.css";
 import RecipeCard from './recipe_card'
 
@@ -16,6 +16,13 @@ function App() {
   const [data, setData] = useState([])
   const [url, setUrl] = useState('')
   const [search, setSearch] = useState('')
+  const [keyword, setKeyword] = useState([])
+
+  
+  const updateKeyword = e => {
+    setKeyword([...keyword, e])
+  }
+
 
   useEffect(() => {
     
@@ -39,40 +46,61 @@ function App() {
   }
 
   const updateQuery = e => {
-
-    setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}`)
+    
     console.log(url)
+    updateKeyword(search)
+    console.log(keyword)
     setSearch('')
+    setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}`)
   }
 
   return (
     <div className="App">
+      
 
         <div className='search-bar'>
-          <Input 
+          <Input.Search 
             placeholder="search recipe"
             value={search} 
             onChange={updateSearch} 
             onPressEnter={updateQuery}
             autoFocus
-          ></Input>
+          ></Input.Search>
         </div>
+        <div className='keyword'>
+          {
+            keyword ? <div>{
+              keyword.map(
+                item => (
+                  <Tag closable color="volcano">{item}</Tag>
+                  )
+                )}
+            </div> : ''
+          }
+        </div>
+        
 
-        <div className='search-button'>
-          <Button type="primary" shape='circle-outline' icon='search' size='large' onClick={updateQuery}></Button>
-        </div>
+        {
+          data ? <Row>{
             
-        <Row>
+            data.map(
+              dataItem => (
+                <RecipeCard title={dataItem.recipe.label} image={dataItem.recipe.image} ingredients={dataItem.recipe.ingredients} />
+                )
+              )  
+          }
+          </Row> : <div className="background"></div>
+        } 
+        {/* <Row>
           {
             data ? data.map(
               dataItem => (
                 <RecipeCard title={dataItem.recipe.label} image={dataItem.recipe.image} ingredients={dataItem.recipe.ingredients} />
               )
             )
-            : 'no data'
-          }
-          
-        </Row>
+            : ''
+          }          
+        </Row> */}
 
         
 

@@ -7,8 +7,8 @@ import "antd/dist/antd.css"
 function RecipeCard({title, image, ingredients }) {
     return (
 
-            <Col span={4}>
-                <div style={{ background: '#ECECEC', padding: '30px' }}>
+            <Col span={6}>
+                <div style={{ padding: '30px' }}>
 
                 
                     <Card title={title} bordered={false} style={{ width: 300 }}>

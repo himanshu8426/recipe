@@ -1,22 +1,31 @@
 .App {
-  text-align: start;
+  /* background: rgb(238,174,202);
+  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%); */
+
+  /* background: #2980b9;  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #2c3e50, #2980b9);  /* Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #2c3e50, #2980b9); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #FA8BFF;
+  background-image: linear-gradient(45deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%);
+
 }
 
-.App-logo {
-  height: 40vmin;
+.search-bar{
+  padding-top: 3%;
+  padding-left: 20%;
+  padding-right: 20%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.background {
+  background-color: #FA8BFF;
+  background-image: linear-gradient(45deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%);
 }
 
-.App-link {
-  color: #09d3ac;
+.keyword{
+  padding-top: 5px;
+  padding-left: 20%;
+  padding-right: 20%;
 }
