@@ -101,7 +101,7 @@ function App() {
                   fat={'-' || dataItem.recipe.totalNutrients.FAT.quantity}
                   carbs={'-' || dataItem.recipe.totalNutrients.PROCNT.quantity}
                   protein={'-' || dataItem.recipe.totalNutrients.CHOCDF.quantity}
-                  
+                  url={dataItem.recipe.url}
                   />
                 )
               )  
