@@ -8,9 +8,9 @@ import './recipe_card.css';
 
 
 
-function RecipeCard({title, image, ingredients, calories, fat, carbs, protein }) {
+function RecipeCard({title, image, ingredients, calories, fat, protein }) {
     return (
-
+            
             <Card className='recipe-card' color='orange'  raised={true}>
                 <Card.Content>
                     <Image className="recipe-image" src={image} size='tiny'></Image>

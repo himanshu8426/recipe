@@ -15,7 +15,7 @@ function App() {
   const APP_ID = '08233a59'
   const APP_KEY = '66574bed08e91975f9a0a66ddc03dbf5'  
   
-  const [data, setData] = useState([])
+  const [data, setData] = useState({})
   const [url, setUrl] = useState('')
   const [search, setSearch] = useState('')
   const [keyword, setKeyword] = useState([])
@@ -33,7 +33,7 @@ function App() {
       .get(url)
       .then( response => {
           setLoading(false)
-          setData(response.data.hits)
+          setData(response.data)
           console.log(data)
           console.log(response)
       })
@@ -82,20 +82,26 @@ function App() {
           }
         </div>
         
+        {/* {
+          data.hits ? <h1>{`total recipes ${data.count}`}</h1> : ''
+        } */}
 
         {
-          data ? <Card.Group itemsPerRow={3} className='card-group'>{
+          data.hits ? <Card.Group itemsPerRow={3} className='card-group'>{
             
-            data.map(
+            data.hits.map(
               dataItem => (
                 <RecipeCard 
                   title={dataItem.recipe.label} 
                   image={dataItem.recipe.image}
                   ingredients={dataItem.recipe.ingredients}
                   calories={dataItem.recipe.calories}
-                  fat={dataItem.recipe.totalNutrients.FAT.quantity}
-                  carbs={dataItem.recipe.totalNutrients.PROCNT.quantity}
-                  protein={dataItem.recipe.totalNutrients.CHOCDF.quantity}
+                  // fat={ dataItem.recipe.totalNutrients.FAT.quantity === 'undefined ? '-' : {dataItem.recipe.totalNutrients.FAT.quantity}
+
+                  fat={'-' || dataItem.recipe.totalNutrients.FAT.quantity}
+                  carbs={'-' || dataItem.recipe.totalNutrients.PROCNT.quantity}
+                  protein={'-' || dataItem.recipe.totalNutrients.CHOCDF.quantity}
+                  
                   />
                 )
               )  
@@ -104,7 +110,7 @@ function App() {
         } 
 
         {
-          data ? <Pagination defaultActivePage={1} totalPages={10} className="pagination"/> : ''
+          data.hits ? <Pagination defaultActivePage={1} totalPages={10} className="pagination"/> : ''
         }
 
         {/* <Row>
