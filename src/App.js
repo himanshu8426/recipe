@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Input, Tag, Row } from 'antd';
 import RecipeCard from './recipe_card'
 import { Card, Pagination } from 'semantic-ui-react'
+import CardPlaceholder from './card_placeholder'
 
 import './App.css';
 import "antd/dist/antd.css";
@@ -53,7 +54,7 @@ function App() {
     updateKeyword(search)
     console.log(keyword)
     setSearch('')
-    setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=9`)
+    setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=12`)
   }
 
   return (
@@ -87,7 +88,7 @@ function App() {
         } */}
 
         {
-          data.hits ? <Card.Group itemsPerRow={3} className='card-group'>{
+          data.hits ? <Card.Group itemsPerRow={4} className='card-group' stackable={true}>{
             
             data.hits.map(
               dataItem => (
@@ -98,20 +99,20 @@ function App() {
                   calories={dataItem.recipe.calories}
                   // fat={ dataItem.recipe.totalNutrients.FAT.quantity === 'undefined ? '-' : {dataItem.recipe.totalNutrients.FAT.quantity}
 
-                  fat={'-' || dataItem.recipe.totalNutrients.FAT.quantity}
-                  carbs={'-' || dataItem.recipe.totalNutrients.PROCNT.quantity}
-                  protein={'-' || dataItem.recipe.totalNutrients.CHOCDF.quantity}
+                  fat={ typeof(dataItem.recipe.totalNutrients.FAT) == 'undefined' ? 'n/a' : dataItem.recipe.totalNutrients.FAT.quantity}
+                  protein={ typeof(dataItem.recipe.totalNutrients.PROCNT) == 'undefined' ? 'n/a' : dataItem.recipe.totalNutrients.PROCNT.quantity}
                   url={dataItem.recipe.url}
+                  serves={dataItem.recipe.yield}
                   />
                 )
               )  
           }
-          </Card.Group> : <div className="background"></div>
+          </Card.Group> : ( loading ? <CardPlaceholder/> : '')
         } 
 
-        {
+        {/* {
           data.hits ? <Pagination defaultActivePage={1} totalPages={10} className="pagination"/> : ''
-        }
+        } */}
 
         {/* <Row>
           {

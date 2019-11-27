@@ -2,25 +2,36 @@ import React from 'react'
 import { Popover } from 'antd'
 import "antd/dist/antd.css"
 
-import { Card, Image, Button , Statistic} from 'semantic-ui-react'
+import { Card, Image, Button , Statistic, Segment} from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import './recipe_card.css';
 
 
 
-function RecipeCard({title, image, ingredients, calories, fat, protein, url }) {
+function RecipeCard({title, image, ingredients, calories, fat, protein, url, serves }) {
+
+    const getFullRecipe = () => {
+        window.open(url, '_blank')
+    }
+
     return (
             
-            <Card className='recipe-card' color='orange'  raised={true} href={url} target="_blank">
+            // <Card className='recipe-card' color='orange'  raised={true} href={url} target="_blank">
+            <Card className='recipe-card' color='orange'  raised={true}>
+
                 <Card.Content>
-                    <Image className="recipe-image" src={image} size='tiny'></Image>
-
+                    <Image 
+                        className="recipe-image"
+                        src={image}
+                        size='tiny'
+                        floated='right'
+                    />
                     <Card.Header>{title}</Card.Header>
-
-                    {/* <Card.Meta>{`${ingredients.length} Ingredients`}</Card.Meta> */}
                     <Card.Meta>{`${parseInt(calories)} calories`}</Card.Meta>
-                    {/* <Button primary size='small'>Ingredients</Button> */}
+                    <Card.Description>{`serves ${serves} people`}</Card.Description>
+                    
                 </Card.Content>
+
                 <Card.Content extra>
                     {/* <Card.Description>
                         {   
@@ -33,7 +44,14 @@ function RecipeCard({title, image, ingredients, calories, fat, protein, url }) {
                     </Card.Description> */}
                     
                     <Card.Description>
-                        <Statistic.Group size='small'>
+
+
+                        <Button color='red' floated='right' onClick={getFullRecipe} inverted>
+                            Full Recipe
+                        </Button>
+                        
+                        
+                        <Statistic.Group size='mini'>
                             
                             <Statistic color='green'>
                                 <Statistic.Value>{ingredients.length}</Statistic.Value>
