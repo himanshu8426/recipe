@@ -1,10 +1,8 @@
-// import React, { useState, useEffect} from 'react';
 import React, { useState, useEffect } from 'react';
-
 import axios from 'axios';
-import { Input, Tag, Row } from 'antd';
+import { Input, Tag } from 'antd';
 import RecipeCard from './recipe_card'
-import { Card, Pagination } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
 import CardPlaceholder from './card_placeholder'
 
 import './App.css';
@@ -15,12 +13,15 @@ function App() {
 
   const APP_ID = '08233a59'
   const APP_KEY = '66574bed08e91975f9a0a66ddc03dbf5'  
+  const URL = 'https://api.edamam.com/search'
   
   const [data, setData] = useState({})
-  const [url, setUrl] = useState('')
+  // const [url, setUrl] = useState('')
+  const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [keyword, setKeyword] = useState([])
   const [loading, setLoading] = useState(false)
+
   
   const updateKeyword = e => {
     setKeyword([...keyword, e])
@@ -28,20 +29,32 @@ function App() {
 
   useEffect(() => {    
 
-    setLoading(true)
-
-    axios
-      .get(url)
+    if (keyword.length > 0){
+      setLoading(true)
+    }
+    
+    axios({
+      method: 'GET',
+      url: URL,
+      params: {
+        q: search,
+        app_id: APP_ID,
+        app_key: APP_KEY,
+        from: (page * 16),
+        to: ((page+1) * 16),
+        },
+      })
       .then( response => {
-          setLoading(false)
           setData(response.data)
-          console.log(data)
+          // console.log(data)
           console.log(response)
+          setLoading(false)
+          setSearch('')
       })
       .catch( error => {
         console.log(error)
       })
-  }, [url])
+  }, [keyword, page])
 
 
   const updateSearch = e => {
@@ -50,17 +63,21 @@ function App() {
   }
 
   const updateQuery = e => {
-    console.log(url)
+    // console.log(url)
     updateKeyword(search)
     console.log(keyword)
-    setSearch('')
-    setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=12`)
+    // setSearch('')
+    // setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=12`)
+  }
+
+  const handleScroll = () => {
+    setPage(prevPage => prevPage + 1)
+    console.log(page)
   }
 
   return (
-    <div className="App">
+    <div className="App" onScroll={handleScroll}>
       
-
         <div className='search-bar'>
           <Input.Search 
             placeholder="search recipe"
@@ -71,6 +88,7 @@ function App() {
             loading={loading}
           ></Input.Search>
         </div>
+
         <div className='keyword'>
           {
             keyword ? <div>{
@@ -97,8 +115,6 @@ function App() {
                   image={dataItem.recipe.image}
                   ingredients={dataItem.recipe.ingredients}
                   calories={dataItem.recipe.calories}
-                  // fat={ dataItem.recipe.totalNutrients.FAT.quantity === 'undefined ? '-' : {dataItem.recipe.totalNutrients.FAT.quantity}
-
                   fat={ typeof(dataItem.recipe.totalNutrients.FAT) == 'undefined' ? 'n/a' : dataItem.recipe.totalNutrients.FAT.quantity}
                   protein={ typeof(dataItem.recipe.totalNutrients.PROCNT) == 'undefined' ? 'n/a' : dataItem.recipe.totalNutrients.PROCNT.quantity}
                   url={dataItem.recipe.url}
@@ -107,25 +123,12 @@ function App() {
                 )
               )  
           }
-          </Card.Group> : ( loading ? <CardPlaceholder/> : '')
+          </Card.Group> : ''
         } 
 
-        {/* {
-          data.hits ? <Pagination defaultActivePage={1} totalPages={10} className="pagination"/> : ''
-        } */}
-
-        {/* <Row>
-          {
-            data ? data.map(
-              dataItem => (
-                <RecipeCard title={dataItem.recipe.label} image={dataItem.recipe.image} ingredients={dataItem.recipe.ingredients} />
-              )
-            )
-            : ''
-          }          
-        </Row> */}
-
-        
+        {
+          loading ? <CardPlaceholder/> : <div/>
+        }
 
     </div>
   );
