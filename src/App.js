@@ -17,7 +17,7 @@ function App() {
   
   const [data, setData] = useState({})
   // const [url, setUrl] = useState('')
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
   const [search, setSearch] = useState('')
   const [keyword, setKeyword] = useState([])
   const [loading, setLoading] = useState(false)
@@ -70,13 +70,8 @@ function App() {
     // setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=12`)
   }
 
-  const handleScroll = () => {
-    setPage(prevPage => prevPage + 1)
-    console.log(page)
-  }
-
   return (
-    <div className="App" onScroll={handleScroll}>
+    <div className="App">
       
         <div className='search-bar'>
           <Input.Search 
