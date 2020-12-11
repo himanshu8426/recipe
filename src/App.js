@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Input, Tag } from 'antd';
-import RecipeCard from './recipe_card'
+import RecipeCard from './components/recipe_card'
 import { Card } from 'semantic-ui-react'
-import CardPlaceholder from './card_placeholder'
+import CardPlaceholder from './components/card_placeholder'
+import { ReactComponent as LogoSvg } from './images/logo.svg';
 
 import './App.css';
-import "antd/dist/antd.css";
-import 'semantic-ui-css/semantic.min.css'
+import styled from "styled-components";
 
 function App() {
 
@@ -17,7 +17,8 @@ function App() {
   
   const [data, setData] = useState({})
   // const [url, setUrl] = useState('')
-  const [page, setPage] = useState(0)
+  // const [page, setPage] = useState(0)
+  let page = 0
   const [search, setSearch] = useState('')
   const [keyword, setKeyword] = useState([])
   const [loading, setLoading] = useState(false)
@@ -70,9 +71,21 @@ function App() {
     // setUrl(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=12`)
   }
 
+  const Logo = styled.div` 
+    display: flex;
+    justify-content: center;
+    align-items: felx-end;
+    // margin: 2rem;
+    padding-top: 1%;
+  `
+
   return (
     <div className="App">
-      
+        
+        <Logo>
+          <LogoSvg />
+        </Logo>
+
         <div className='search-bar'>
           <Input.Search 
             placeholder="search recipe"
@@ -101,7 +114,7 @@ function App() {
         } */}
 
         {
-          data.hits ? <Card.Group itemsPerRow={4} className='card-group' stackable={true}>{
+          data.hits ? <Card.Group itemsPerRow={4} className='card-group' stackable={true} style={{backgroundColor: "white"}}>{
             
             data.hits.map(
               dataItem => (
